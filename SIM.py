@@ -1,6 +1,8 @@
 import sys
 
 def main():
+    decompress()
+    '''
     if len(sys.argv) != 2:
         print("Usage: python3 SIM.py [1|2]")
         print("1 for compression, 2 for decompression")
@@ -14,7 +16,7 @@ def main():
         decompress()
     else:
         print("Invalid option. Use '1' for compression or '2' for decompression.")
-
+    '''
 def compress():
     #Create dictionary to create the 16 entry dictionary
     indexed_dictionary= createDictionary("original.txt")
@@ -24,10 +26,145 @@ def compress():
     compressCode("original.txt",indexed_dictionary)
 
 def decompress():
-    ##createdictionary from
-    print("hi")
+    ##createdictionary from compressed code
+    compressed_dict = get_dicionary("compressed.txt")
+    #for key, value in compressed_dict.items():
+       # print(f"{key}: {value}")
+    parse_compressed_code("compressed.txt",compressed_dict)
 
 
+def get_dicionary(filename):
+    reg_dict = {}
+    key = 0
+    with open(filename,'r') as reg:
+        read_data = reg.read().replace('\n', '')
+        dict_index = read_data.index('x')
+        dict_index = dict_index + 4
+        while dict_index < len(read_data):
+            slice_string = read_data[dict_index:dict_index+32]
+            reg_dict[f'{key:04b}'] = slice_string
+            dict_index += 32
+            key +=1
+    reg.close()
+    return reg_dict
+
+def parse_compressed_code(filename,compressed_dict):
+    with open("dout.txt","w") as write_file:
+        pass
+
+    with open(filename, 'r') as reg:
+        read_data = reg.read().replace('\n', '')
+        current_value = 0
+        while current_value < len(read_data):
+            #uncompressed
+            if read_data[current_value:current_value + 3] == "000":
+                current_value += 3
+                write_file.write(f"{read_data[current_value:current_value + 32]}\n")
+                current_value += 33
+            #RLE
+            elif read_data[current_value:current_value + 3] == "001":
+                current_value += 3
+                for i in range(int(read_data[current_value:current_value + 3],2)):
+                    write_file.write(f"{read_data[current_value:current_value + 32]}\n")
+                    current_value += 33
+            #bitmask
+            elif read_data[current_value:current_value + 3] == "010":
+                current_value += 3
+                starting_location =int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                bitmask = read_data[current_value:current_value + 4]
+                current_value += 4
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+
+                dict_bitstring = compressed_dict[dict_index]
+                dict_bitmask = compressed_dict[dict_index][starting_location:starting_location+4]
+
+                modified_bits = f'{int(dict_bitmask, 2) ^ int(bitmask, 2):04b}'
+
+                new_bitstring = (dict_bitstring[:starting_location] +
+                                 modified_bits +
+                                 dict_bitstring[starting_location + 4:])
+                write_file.write(f"{new_bitstring}\n")
+
+            elif read_data[current_value:current_value + 3] == "011":
+                current_value += 3
+                mismatch_location =int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+
+                dict_bitstring = compressed_dict[dict_index]
+                mismatch_char = dict_bitstring[mismatch_location]
+                if mismatch_char == '0':
+                    dict_bitstring[mismatch_location] = '1'
+                else:
+                    dict_bitstring[mismatch_location] = '0'
+                write_file.write(f"{dict_bitstring}\n")
+
+            elif read_data[current_value:current_value + 3] == "100":
+                current_value += 3
+                mismatch_location =int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+
+                dict_bitstring = compressed_dict[dict_index]
+                for i in range(0, 2):
+                    if dict_bitstring[mismatch_location + i] == '0':
+                        dict_bitstring[mismatch_location + i] = '1'
+                    else:
+                        dict_bitstring[mismatch_location + i] = '0'
+                write_file.write(f"{dict_bitstring}\n")
+
+            #4 consecutive bits
+            elif read_data[current_value:current_value + 3] == "101":
+                current_value += 3
+                mismatch_location = int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+
+                dict_bitstring = compressed_dict[dict_index]
+                for i in range(0,4):
+                    if dict_bitstring[mismatch_location + i] == '0':
+                        dict_bitstring[mismatch_location + i] = '1'
+                    else:
+                        dict_bitstring[mismatch_location + i] = '0'
+                write_file.write(f"{dict_bitstring}\n")
+
+                #2 bit mismatch anywhere
+            elif read_data[current_value:current_value + 3] == "110":
+                current_value += 3
+                mismatch_location_1 =int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                mismatch_location_2 =int(read_data[current_value:current_value + 5],2)
+                current_value += 5
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+
+                dict_bitstring = compressed_dict[dict_index]
+                mismatch_char1 = dict_bitstring[mismatch_location_1]
+                mismatch_char2 = dict_bitstring[mismatch_location_2]
+                if mismatch_char1 == '0':
+                    dict_bitstring[mismatch_location_1] = '1'
+                else:
+                    dict_bitstring[mismatch_location_1] = '0'
+                if mismatch_char2 == '0':
+                    dict_bitstring[mismatch_location_2] = '1'
+                else:
+                    dict_bitstring[mismatch_location_2] = '0'
+                write_file.write(f"{dict_bitstring}\n")
+
+            elif read_data[current_value:current_value + 3] == "111":
+                dict_index = read_data[current_value:current_value + 4]
+                current_value += 4
+                dict_bitstring = compressed_dict[dict_index]
+                #write_file.write(f"{dict_bitstring}\n")
+            prev_value = read_data[current_value - 32:current_value]
+    reg.close()
+    write_file.close()
+    return
 
 def createDictionary(filename):
     #string of index, number of times appeared
