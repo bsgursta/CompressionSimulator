@@ -24,7 +24,6 @@ def compress():
     compressCode("original.txt",indexed_dictionary)
 
 def decompress():
-    ##createdictionary from compressed code
     compressed_dict = get_dicionary("compressed.txt")
     #for key, value in compressed_dict.items():
        # print(f"{key}: {value}")
@@ -184,7 +183,9 @@ def remove_padded_zeros(filepath):
     infile.close()
     # Remove the last line
     with open(filepath, 'w') as outfile:
-        outfile.writelines(lines[:-1])
+        final_line = lines[len(lines) - 1]
+        if len(final_line) < 32:
+            outfile.writelines(lines[:-1])
 
 def createDictionary(filename):
     #string of index, number of times appeared

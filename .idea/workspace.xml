@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e5a73137-b657-466c-b3f0-51e7f5d8b82d" name="Changes" comment="pushes">
+    <list default="true" id="e5a73137-b657-466c-b3f0-51e7f5d8b82d" name="Changes" comment="Done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SIM.py" beforeDir="false" afterPath="$PROJECT_DIR$/SIM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cout.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dout.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reference.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +112,7 @@
       <workItem from="1742861595233" duration="10000" />
       <workItem from="1742872838170" duration="6560000" />
       <workItem from="1742953907730" duration="611000" />
-      <workItem from="1743195085705" duration="13643000" />
+      <workItem from="1743195085705" duration="14274000" />
     </task>
     <task id="LOCAL-00001" summary="pushes">
       <option name="closed" value="true" />
@@ -141,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742879444754</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Done">
+      <option name="closed" value="true" />
+      <created>1743270958339</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743270958339</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,9 +154,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="pushes" />
-    <option name="LAST_COMMIT_MESSAGE" value="pushes" />
+    <MESSAGE value="Done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Done" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CodeCompression$SIM.coverage" NAME="SIM Coverage Results" MODIFIED="1743267690151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CodeCompression$SIM.coverage" NAME="SIM Coverage Results" MODIFIED="1743271491665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
